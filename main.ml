@@ -41,19 +41,25 @@ let create_computers n p =
     | n -> 
       let processes = create_processes p in
       create_a_computer n processes :: create (n - 1) 
+  in
+  create n
 
-
-(* iterate over the list of computers and print the state of each one and the list of processes *)
-(* let print_computers computers = *)
-(*   let print_process processes = *)
-(*     Printf.printf "{Process: %s: power: %i}, " processes.process_id processes.power *)
-(*   in *)
-(*   List.iter *)
-(*     (fun computer -> *)
-(*       Printf.printf "Computer: %s: usage: %i " computer.computer_id computer.usage; *)
-(*       List.iter (fun process -> print_process process) computer.processes; *)
-(*       Printf.printf "\n\n") *)
-(*     computers *)
+let print_computers computers =
+  let rec print_computer computer =
+    match computer with
+    | [] -> ()
+    | computer :: rest ->
+        Printf.printf "Computer id: %s\n" computer.computer_id;
+        Printf.printf "Computer usage: %i\n" computer.usage;
+        Printf.printf "Computer current processes: ";
+        List.iter (fun x -> Printf.printf "%s " x.process_id) computer.current_processes;
+        Printf.printf "\n";
+        Printf.printf "Computer processes: ";
+        List.iter (fun x -> Printf.printf "%s " x.process_id) computer.processes;
+        Printf.printf "\n";
+        print_computer rest
+  in
+  print_computer computers
 
 (* iterate over the list of computers
    get first process in the list of processes 
@@ -64,46 +70,51 @@ let create_computers n p =
            else, take it if we can
    update the usage of computer*)
 
-let rec ask not_asked_computers computer count process =
-  match count with
+let add_process_to_computer computer process =
+  computer.current_processes <- computer.current_processes @ [process];
+  computer.usage <- computer.usage + process.power
+
+let rec ask not_asked_computers computer reach process =
+  match reach with
+  | -1 -> ()
   | 0 -> (
-      match not_asked_computers with
-      | [] -> ()
-      | _ -> 
-        computer.current_processes <- computer.current_processes @ [process];
-        computer.usage <- computer.usage + process.power;
-        ask [] computer 0 process;
-      )
+    add_process_to_computer computer process;
+    ()
+  )
   | _ ->
-    let random_computer = List.nth not_asked_computers (Random.int (List.length not_asked_computers)) in
+    let random_idx = Random.int (List.length not_asked_computers) in 
+    let random_computer = List.nth not_asked_computers random_idx in 
     let not_asked_computers = List.filter (fun x -> x.computer_id <> random_computer.computer_id) not_asked_computers in
     if random_computer.usage + process.power <= 100 then ( 
-        random_computer.current_processes <- random_computer.current_processes @ [process];
-        random_computer.usage <- random_computer.usage + process.power;
-        ask not_asked_computers computer 0 process;)
-    else ask not_asked_computers computer (count - 1) process
+      add_process_to_computer random_computer process;
+      ask not_asked_computers computer (-1) process;)
+    else 
+      ask not_asked_computers computer (reach - 1) process
 
-let rec handle_computers computers z =
-  match computers with
-    | [] -> ()
-    | computer :: rest ->
-        let process = List.hd computer.processes in
-        computer.processes <- List.tl computer.processes;
-        match process.process_id with
-        | "-1" -> handle_computers rest z 
-        | _ -> ask computers computer z process 
+let handle_computers computers z =
+  let rec aux computers computers_to_handle z =
+    match computers_to_handle with
+      | [] -> ()
+      | computer :: rest ->
+          let process = List.hd computer.processes in
+          computer.processes <- List.tl computer.processes;
+          let computers_to_handle = List.filter(fun x -> x.computer_id <> computer.computer_id) computers_to_handle in
+          match process.process_id with
+          | "-1" -> ()
+          | _ -> ask computers computer z process;
+          aux computers computers_to_handle z
+  in
+  aux computers computers z
 
 let simulate_lazy p r z n t =
-    print_endline "Simulation started";
     let computers = create_computers n t in
     let rec time_tick time_left computers =
         match time_left with
-        | 0 -> ()
+        | 0 -> () 
         | _ -> 
-            Printf.printf("Time left: %i\n") time_left;
             handle_computers computers z;
             time_tick (time_left - 1) computers
-    in
+    in 
     time_tick t computers
 
 let () =
@@ -111,5 +122,5 @@ let () =
     let r = 0.2 in
     let z = 3 in
     let n = 10 in
-    let t = 100 in
-    simulate_lazy p r z n t 
+    let t = 1000 in
+    simulate_lazy p r z n t;
