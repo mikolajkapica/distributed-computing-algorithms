@@ -91,32 +91,34 @@ let print_computers computers =
     (*             computer.processes <- List.tl computer.processes; *)
     (*             time_tick (rest @ random_computers) *)
 
+    let accepting_computer = let rec ask not_asked_computers count process =
+      match count with
+      | 0 -> []
+      | z ->
+        let random_computer = List.nth not_asked_computers (Random.int (List.length not_asked_computers)) in
+        if random_computer.usage + process.power <= 100 then 
+            random_computer.current_processes <- random_computer.current_processes @ [process];
+            random_computer.usage <- random_computer.usage + process.power;
+            random_computer :: ask not_asked_computers z;
+
+    let rec handle_computers computers z =
+        match computers with
+        | [] -> ()
+        | computer :: rest ->
+            (* handle new process *)
+            let process = List.hd computer.processes in
+            let get_accepting_computer = match process.process_id with
+            | "-1" -> 
+                    computer.processes <- List.tl computer.processes; 
+                    None
+            | _ -> ask computers z 
+
 let simulate_lazy p r z n = 
     let computers = create_computers n in
     let rec time_tick time_left computers =
         match time_left with
         | 0 -> ()
-        | _ ->
-            let rec handle_computers computers =
-                match computers with
-                | [] -> ()
-                | computer :: rest ->
-                    (* handle new process *)
-                    let process = List.hd computer.processes in
-                    let get_accepting_computer = match process.process_id with
-                    | "-1" -> 
-                            computer.processes <- List.tl computer.processes; 
-                            None
-                    | _ ->
-                        let accepting_computer = let rec ask not_asked_computers count =
-                          match count with
-                          | 0 -> []
-                          | z ->
-                            let random_computer = List.nth not_asked_computers (Random.int (List.length not_asked_computers)) in
-                            if random_computer.usage + process.power <= 100 then 
-                                random_computer.current_processes <- random_computer.current_processes @ [process];
-                                random_computer.usage <- random_computer.usage + process.power;
-                                random_computer :: ask not_asked_computers z;
+        | _ -> handle_computers computers
 
 let () =
     let p = 0.5 in
