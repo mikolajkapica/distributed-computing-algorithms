@@ -16,12 +16,12 @@ let create_computers n p =
     match p with
     | 0 -> []
     | p ->
-        match Random.bool () with
+        match Random.float 1.0 > 0.3 with
         | false -> {process_id = "-1"; power = 0; time = 0} :: create_processes (p - 1)
         | true ->
             {
               process_id = string_of_int p;
-              power = Random.int 100;
+              power = Random.int 30;
               time = Random.int 10;
             }
             :: create_processes (p - 1)
@@ -74,7 +74,7 @@ let add_process_to_computer computer process =
   computer.current_processes <- computer.current_processes @ [process];
   computer.usage <- computer.usage + process.power
 
-let rec ask not_asked_computers computer process =
+let rec ask not_asked_computers computer process p =
   match List.length not_asked_computers with
   | 0 -> (
     add_process_to_computer computer process;
@@ -84,12 +84,12 @@ let rec ask not_asked_computers computer process =
     let random_idx = Random.int (List.length not_asked_computers) in 
     let random_computer = List.nth not_asked_computers random_idx in 
     let not_asked_computers = List.filter (fun x -> x.computer_id <> random_computer.computer_id) not_asked_computers in
-    if random_computer.usage + process.power <= 100 then ( 
+    if random_computer.usage + process.power <= p then ( 
       add_process_to_computer random_computer process;
       ()
     )
     else 
-      ask not_asked_computers computer process
+      ask not_asked_computers computer process p
 
 let handle_computers computers p r =
   let rec aux computers computers_to_handle =
@@ -115,20 +115,21 @@ let handle_computers computers p r =
                   )) computers
                 )
               )
-              else ask computers computer process;
+              else ask computers computer process p;
           aux computers computers_to_handle 
   in
   aux computers computers 
 
 let time_passage computers =
-  let rec aux computers =
-    match computers with
-    | [] -> ()
-    | computer :: rest ->
-        List.iter (fun x -> x.time <- x.time - 1) computer.current_processes;
-        aux rest
-  in
-  aux computers
+  List.iter (fun x -> 
+    x.current_processes <- List.filter (fun y -> y.time > 0) x.current_processes;
+    x.usage <- List.fold_left (fun acc x -> acc + x.power) 0 x.current_processes;
+    List.iter (fun y -> y.time <- y.time - 1) x.current_processes
+  ) computers
+
+let computer_usages computers =
+  List.iter (fun x -> Printf.printf "{Computer: %s: %i} " x.computer_id x.usage) computers;
+  Printf.printf "\n"
 
 let simulate_lazy p r n t =
     let computers = create_computers n t in
@@ -136,6 +137,7 @@ let simulate_lazy p r n t =
         match time_left with
         | 0 -> () 
         | _ -> 
+            computer_usages computers;
             time_passage computers;
             handle_computers computers p r;
             time_tick (time_left - 1) computers
