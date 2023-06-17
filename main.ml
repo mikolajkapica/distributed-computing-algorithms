@@ -65,32 +65,6 @@ let print_computers computers =
            else, take it if we can
    update the usage of computer*)
 
-    (* let computers = create_computers n in *)
-    (* let rec time_tick computers = *)
-    (*     match computers with *)
-    (*     | [] -> () *)
-    (*     | computer :: rest -> *)
-    (*         let process = List.hd computer.processes in *)
-    (*         match process.process_id with *)
-    (*         | "-1" ->  *)
-    (*                 computer.processes <- List.tl computer.processes;  *)
-    (*                 time_tick rest *)
-    (*         | _ -> *)
-    (*             let rec ask not_asked_computers count = function *)
-    (*                 | 0 -> [] *)
-    (*                 | z ->  *)
-    (*                     let random_computer = List.nth not_asked_computers (Random.int (List.length not_asked_computers)) in *)
-    (*                     let not_asked_computers = List.filter (fun x -> x.computer_id <> random_computer.computer_id) *)
-    (*                     if random_computer.usage + process.power <= 100 then *)
-    (*                         random_computer.current_processes <- random_computer.current_processes @ [process]; *)
-    (*                         random_computer.usage <- random_computer.usage +. process.power; *)
-    (*                     random_computer :: ask not_asked_computers (count + 1) *)
-    (*  *)
-    (*             let not_asked_computers = computers in *)
-    (*             let random_computers = ask not_asked_computers z in *)
-    (*             computer.processes <- List.tl computer.processes; *)
-    (*             time_tick (rest @ random_computers) *)
-
     let accepting_computer = let rec ask not_asked_computers count process =
       match count with
       | 0 -> []
