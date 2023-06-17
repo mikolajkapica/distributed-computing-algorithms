@@ -1,7 +1,7 @@
 type process = { 
     process_id : string; 
     power : int; 
-    time : int }
+    mutable time : int }
 
 type computer = {
   computer_id : string;
@@ -76,7 +76,6 @@ let add_process_to_computer computer process =
 
 let rec ask not_asked_computers computer reach process =
   match reach with
-  | -1 -> ()
   | 0 -> (
     add_process_to_computer computer process;
     ()
@@ -87,7 +86,8 @@ let rec ask not_asked_computers computer reach process =
     let not_asked_computers = List.filter (fun x -> x.computer_id <> random_computer.computer_id) not_asked_computers in
     if random_computer.usage + process.power <= 100 then ( 
       add_process_to_computer random_computer process;
-      ask not_asked_computers computer (-1) process;)
+      ()
+    )
     else 
       ask not_asked_computers computer (reach - 1) process
 
@@ -106,12 +106,23 @@ let handle_computers computers z =
   in
   aux computers computers z
 
+let time_passage computers =
+  let rec aux computers =
+    match computers with
+    | [] -> ()
+    | computer :: rest ->
+        List.iter (fun x -> x.time <- x.time - 1) computer.current_processes;
+        aux rest
+  in
+  aux computers
+
 let simulate_lazy p r z n t =
     let computers = create_computers n t in
     let rec time_tick time_left computers =
         match time_left with
         | 0 -> () 
         | _ -> 
+            time_passage computers;
             handle_computers computers z;
             time_tick (time_left - 1) computers
     in 
