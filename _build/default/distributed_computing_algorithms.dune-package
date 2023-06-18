@@ -1,0 +1,10 @@
+(lang dune 3.8)
+(name distributed_computing_algorithms)
+(sections
+ (lib .)
+ (bin ../../bin)
+ (doc ../../doc/distributed_computing_algorithms))
+(files
+ (lib (META dune-package opam))
+ (bin (distributed_computing_algorithms))
+ (doc (README.md)))

@@ -1,0 +1,11 @@
+lib: [
+  "_build/install/default/lib/distributed_computing_algorithms/META"
+  "_build/install/default/lib/distributed_computing_algorithms/dune-package"
+  "_build/install/default/lib/distributed_computing_algorithms/opam"
+]
+bin: [
+  "_build/install/default/bin/distributed_computing_algorithms"
+]
+doc: [
+  "_build/install/default/doc/distributed_computing_algorithms/README.md"
+]
