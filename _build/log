@@ -1,51 +1,51 @@
-# dune exec distributed_computing_algorithms altruist
+# dune exec distributed_computing_algorithms --release altruist
 # OCAMLPARAM: unset
 # Shared cache: disabled
-# Workspace root: /home/mikolaj/repos/distributed_computing_algorithms
-# Auto-detected concurrency: 3
-$ /home/mikolaj/.opam/default/bin/ocamlc.opt -config > /tmp/dune_4fa79c_output
+# Workspace root: /home/nick/Projects/distributed-computing-algorithms
+# Auto-detected concurrency: 4
+$ /home/nick/.opam/default/bin/ocamlc.opt -config > /tmp/dune_5b9db3_output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
-#  ; profile = Dev
+#  ; profile = Release
 #  ; merlin = true
 #  ; for_host = None
 #  ; fdo_target_exe = None
 #  ; build_dir = In_build_dir "default"
-#  ; ocaml_bin = External "/home/mikolaj/.opam/default/bin"
-#  ; ocaml = Ok External "/home/mikolaj/.opam/default/bin/ocaml"
-#  ; ocamlc = External "/home/mikolaj/.opam/default/bin/ocamlc.opt"
-#  ; ocamlopt = Ok External "/home/mikolaj/.opam/default/bin/ocamlopt.opt"
-#  ; ocamldep = Ok External "/home/mikolaj/.opam/default/bin/ocamldep.opt"
-#  ; ocamlmklib = Ok External "/home/mikolaj/.opam/default/bin/ocamlmklib.opt"
+#  ; ocaml_bin = External "/home/nick/.opam/default/bin"
+#  ; ocaml = Ok External "/home/nick/.opam/default/bin/ocaml"
+#  ; ocamlc = External "/home/nick/.opam/default/bin/ocamlc.opt"
+#  ; ocamlopt = Ok External "/home/nick/.opam/default/bin/ocamlopt.opt"
+#  ; ocamldep = Ok External "/home/nick/.opam/default/bin/ocamldep.opt"
+#  ; ocamlmklib = Ok External "/home/nick/.opam/default/bin/ocamlmklib.opt"
 #  ; env =
 #      map
 #        { "DUNE_OCAML_HARDCODED" :
-#            "/home/mikolaj/.opam/default/lib/ocaml:/home/mikolaj/.opam/default/lib"
-#        ; "DUNE_OCAML_STDLIB" : "/home/mikolaj/.opam/default/lib/ocaml"
+#            "/home/nick/.opam/default/lib/ocaml:/home/nick/.opam/default/lib"
+#        ; "DUNE_OCAML_STDLIB" : "/home/nick/.opam/default/lib/ocaml"
 #        ; "DUNE_SOURCEROOT" :
-#            "/home/mikolaj/repos/distributed_computing_algorithms"
+#            "/home/nick/Projects/distributed-computing-algorithms"
 #        ; "INSIDE_DUNE" :
-#            "/home/mikolaj/repos/distributed_computing_algorithms/_build/default"
+#            "/home/nick/Projects/distributed-computing-algorithms/_build/default"
 #        ; "OCAMLFIND_IGNORE_DUPS_IN" :
-#            "/home/mikolaj/repos/distributed_computing_algorithms/_build/install/default/lib"
+#            "/home/nick/Projects/distributed-computing-algorithms/_build/install/default/lib"
 #        ; "OCAMLPATH" :
-#            "/home/mikolaj/repos/distributed_computing_algorithms/_build/install/default/lib"
+#            "/home/nick/Projects/distributed-computing-algorithms/_build/install/default/lib"
 #        ; "OCAMLTOP_INCLUDE_PATH" :
-#            "/home/mikolaj/repos/distributed_computing_algorithms/_build/install/default/lib/toplevel"
+#            "/home/nick/Projects/distributed-computing-algorithms/_build/install/default/lib/toplevel"
 #        ; "OCAML_COLOR" : "always"
 #        ; "OPAMCOLOR" : "always"
 #        }
 #  ; findlib_paths =
-#      [ External "/home/mikolaj/.opam/default/lib/ocaml"
-#      ; External "/home/mikolaj/.opam/default/lib"
+#      [ External "/home/nick/.opam/default/lib/ocaml"
+#      ; External "/home/nick/.opam/default/lib"
 #      ]
 #  ; natdynlink_supported = true
 #  ; supports_shared_libraries = true
 #  ; ocaml_config =
 #      { version = "5.0.0"
-#      ; standard_library_default = "/home/mikolaj/.opam/default/lib/ocaml"
-#      ; standard_library = "/home/mikolaj/.opam/default/lib/ocaml"
+#      ; standard_library_default = "/home/nick/.opam/default/lib/ocaml"
+#      ; standard_library = "/home/nick/.opam/default/lib/ocaml"
 #      ; standard_runtime = "the_standard_runtime_variable_was_deleted"
 #      ; ccomp_type = "cc"
 #      ; c_compiler = "gcc"
