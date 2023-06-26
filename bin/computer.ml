@@ -19,7 +19,7 @@ type migration_stats = {
 
 (** create n computers with p processes (either process or null(id=-1)*)
 let create_computers n_computers p_processes =
-  Random.self_init ();
+  (* Random.self_init (); *)
   let rec create_processes p_processes =
     match p_processes with
     | 0 -> []
@@ -110,7 +110,7 @@ let stats computers migration_stats =
   Printf.printf "Standard deviation: %f\n" std_dev;
   Printf.printf "Max usage: %i\n" (List.fold_left (fun acc x -> if acc < x then x else acc) 0 usages);
   Printf.printf "Migration counter: %i\n" migration_stats.migration_counter;
-  Printf.printf "Migration ask counter: %i\n" migration_stats.migration_ask_counter;
+  Printf.printf "Migration ask counter: %i\n\n" migration_stats.migration_ask_counter;
   ()
 
 (** simulation function *)
